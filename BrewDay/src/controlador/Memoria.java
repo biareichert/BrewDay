@@ -7,7 +7,7 @@ public class Memoria{
     static Memoria instancia = null;
     ArrayList<UsuariosDAO> usuarios = new ArrayList();
     ArrayList<ReceitasDAO> receitas = new ArrayList();
-    ArrayList<AditivosDAO> aditivos = new ArrayList();
+    //ArrayList<AditivosDAO> aditivos = new ArrayList();
     
     
     private Memoria() throws Exception{
@@ -81,8 +81,9 @@ public class Memoria{
     }
     
     public boolean excluirReceita(ReceitasDAO r) throws Exception{
-        r.remover();
         receitas.remove(r);
+        r.remover();
+        System.out.println("retornei");
         return true;
     }
 
@@ -107,7 +108,7 @@ public class Memoria{
     }
 
     
-    public void adicionarAditivo(AditivosDAO aditivo) {
+    /*public void adicionarAditivo(AditivosDAO aditivo) {
         for(AditivosDAO a : aditivos){
             if(a.getNome().equals(aditivo.getNome())){
                 
@@ -115,7 +116,8 @@ public class Memoria{
                 aditivos.add(aditivo);
             }
         }
-    }
+    }*/
+
     public boolean consultarAditivo(AditivosDAO aditivo, ProdutosDAO produto){
         boolean flag = true;
         for(AditivosDAO a : produto.getAditivo()){

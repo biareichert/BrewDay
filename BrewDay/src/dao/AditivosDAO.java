@@ -43,7 +43,7 @@ public class AditivosDAO {
         AditivosDAO ad = null;
         Connection con = Conexao.conectar();
         Statement st = con.createStatement();
-        String expSQL = "select * from aditivo where idproduto = " + idProduto + " and nome = '"+ nome+"'";
+        String expSQL = "select * from aditivo where idproduto = " + idProduto + " and nome = '"+nome+"'";
         ResultSet rs = st.executeQuery(expSQL);
         if(rs.next()){
             int idAditivo = rs.getInt(1);
@@ -105,6 +105,16 @@ public class AditivosDAO {
     }
 
     public static void removerAditivo(int id) throws Exception {
+        Connection con = Conexao.conectar();
+        String expSQL = "delete from aditivo where idproduto = ?";
+        PreparedStatement st = con.prepareStatement(expSQL);
+        st.setInt(1, id);
+        st.execute();
+        st.close();
+        con.close();
+        
+    }
+    public void removerAditivoSemStatic(int id) throws Exception {
         Connection con = Conexao.conectar();
         String expSQL = "delete from aditivo where idproduto = ?";
         PreparedStatement st = con.prepareStatement(expSQL);

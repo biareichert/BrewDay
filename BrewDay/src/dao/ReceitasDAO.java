@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class ReceitasDAO extends ProdutosDAO{
     private String nome;
     
-    
     public ReceitasDAO(String nome, int maltes, int leveduras, int lupulo, int acucares, ArrayList<AditivosDAO> aditivo){
         this(nome,0, maltes, leveduras, lupulo, acucares, aditivo);
     }
@@ -53,7 +52,10 @@ public class ReceitasDAO extends ProdutosDAO{
         st.setInt(6, this.getId());
         
         st.execute();
-        this.getAditivo().get(0).alterarAditivo();
+        if(!this.getAditivo().isEmpty()){
+            this.getAditivo().get(0).alterarAditivo();
+        }
+        
         st.close();
         con.close();
         
@@ -72,7 +74,10 @@ public class ReceitasDAO extends ProdutosDAO{
         
         st.execute();
         consultarReceitaPorNome();
-        this.getAditivo().get(0).cadastrarAditivo(this.getId());
+        if(!this.getAditivo().isEmpty()){
+            this.getAditivo().get(0).cadastrarAditivo(this.getId());
+        }
+        
         st.close();
         con.close();
         
@@ -101,7 +106,9 @@ public class ReceitasDAO extends ProdutosDAO{
     }
 
     public void remover() throws Exception {
-        this.getAditivo().get(0).removerAditivo(this.getId());
+        if(!this.getAditivo().isEmpty()){
+            this.getAditivo().get(0).removerAditivo(this.getId());
+        }
         Connection con = Conexao.conectar();
         String expSQL = "delete from produtos where id = ?";
         PreparedStatement st = con.prepareStatement(expSQL);

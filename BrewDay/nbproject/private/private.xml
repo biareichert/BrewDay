@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/apresentacao/TelaListaReceitas.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/apresentacao/TelaMostrarReceita.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/apresentacao/TelaCriarReceita.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/controlador/RegrasNegocio.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/dao/AditivosDAO.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/apresentacao/TelaCustomizarReceitas.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/apresentacao/TelaListaIngredientes.java</file>
+            <file>file:/C:/Users/beatr/Desktop/BrewDay/src/controlador/Memoria.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -179,29 +179,25 @@ public class TelaCadastro extends javax.swing.JFrame {
         cpf = inputCpf.getText();
         nome = inputNome.getText();
         senha = inputSenha.getText();
-        //ArrayList<ReceitasDAO> receitas = new ArrayList();
-        //ArrayList<AditivosDAO> v = new ArrayList<>();
-        //ProdutosDAO ing = new ProdutosDAO(0,0,0,0,0,v);
+        boolean i = false;
         
         try{
             
             UsuariosDAO u = new UsuariosDAO(cpf, nome, senha);
             boolean j = RegrasNegocio.verificarCpf(cpf);
-            boolean i = RegrasNegocio.cadastrar(u);
-            if(i && j){
-                //u.setIngredientes(ing);
-                JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso!", "Cadastrar", 1);
-                TelaLogin login = new TelaLogin();
-                login.setVisible(true);
-                dispose();            
-            }
-            else{ 
+            if(j){
+                i = RegrasNegocio.cadastrar(u);
+                if(i){
+                    JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso!", "Cadastrar", 1);
+                    TelaLogin login = new TelaLogin();
+                    login.setVisible(true);
+                    dispose();            
+                }else{
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuario.", "ERRO", 1);
+                }
+            }else{ 
                 JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuario.", "ERRO", 1);
-                TelaCadastro tc = new TelaCadastro();
-                tc.setVisible(true);
-                dispose(); 
             }
-            
             
         } catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Digite um valor válido para os campos.", "Erro", JOptionPane.ERROR_MESSAGE);

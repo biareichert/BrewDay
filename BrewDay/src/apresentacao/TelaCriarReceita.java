@@ -252,26 +252,27 @@ public class TelaCriarReceita extends javax.swing.JFrame {
         
         
         try{
-            ArrayList<AditivosDAO> lista = new ArrayList<AditivosDAO>();
-            int q = Integer.parseInt(quantidade);
+            ArrayList<AditivosDAO> lista = new ArrayList<>();
+            int q = 0;
             int mal = Integer.parseInt(maltes);
             int lu = Integer.parseInt(lupulo);
             int le = Integer.parseInt(leveduras);
             int a = Integer.parseInt(acucares);
-            AditivosDAO ad = new AditivosDAO(0,aditivo,q);
+            
+            if(!quantidade.equals("") && !aditivo.equals("")){
+                q = Integer.parseInt(quantidade);
+                AditivosDAO ad = new AditivosDAO(0,aditivo,q);
+                lista.add(ad);
+            }
             
             boolean j = RegrasNegocio.verificarQuantidade(mal,le,lu,a,q);
             
-            if(j){ 
-                
-                lista.add(ad);
+            if(j){
                 ReceitasDAO r = new ReceitasDAO(nome,mal,le,lu,a,lista);
                 boolean i = false;
-                try {
-                    i = RegrasNegocio.cadastrarReceita(r,logado);
-                } catch (Exception ex) {
-                    Logger.getLogger(TelaCriarReceita.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
+                i = RegrasNegocio.cadastrarReceita(r,logado);
+                
                 if(i){
                     JOptionPane.showMessageDialog(null, "Receita cadastrada com sucesso!", "Cadastrar", 1);
                     TelaMenu menu = new TelaMenu(logado);
@@ -279,22 +280,18 @@ public class TelaCriarReceita extends javax.swing.JFrame {
                     dispose();
                 }else{
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar receita.", "ERRO", 1);
-                    TelaCriarReceita tc = new TelaCriarReceita(logado);
-                    tc.setVisible(true);
-                    dispose();
+                    
                 }
                             
-            }
-            else{ 
+            }else{ 
                 JOptionPane.showMessageDialog(null, "São aceitos apenas valores positivos!", "ERRO", 1);
-                TelaCriarReceita tc = new TelaCriarReceita(logado);
-                tc.setVisible(true);
-                dispose(); 
+                 
             }
-            
             
         } catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Digite um valor válido para os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao criar receita.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botaoSalvarActionPerformed
 

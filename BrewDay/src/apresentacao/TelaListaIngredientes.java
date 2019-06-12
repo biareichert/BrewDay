@@ -264,8 +264,7 @@ public class TelaListaIngredientes extends javax.swing.JFrame {
         String lupulo = inputLupulo.getText();
         String leveduras = inputLeveduras.getText();
         String acucares = inputAcucares.getText();
-        boolean verificarAditivo;
-       
+        
         try{
             int mal = Integer.parseInt(maltes);
             int lu = Integer.parseInt(lupulo);
@@ -306,9 +305,15 @@ public class TelaListaIngredientes extends javax.swing.JFrame {
                         ad.cadastrarAditivo(u.getIngredientes().getId());
                         ingrediente.addAditivo(ad);
                     }else{
-                        //mensagem de erro - aditivo com mesmo nome  
+                        JOptionPane.showMessageDialog(null, "Você não pode cadastrar um aditivo com o mesmo nome.", "ERRO", 1);
                     }
-                }                
+                }
+                
+                JOptionPane.showMessageDialog(null, "Lista de Ingredientes alterada com sucesso!", "Cadastrar", 1);
+                TelaMenu menu = new TelaMenu(logado);
+                menu.setVisible(true);
+                dispose();
+                
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Alteração inválida.", "Erro", 0);

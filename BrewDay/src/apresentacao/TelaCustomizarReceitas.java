@@ -4,6 +4,7 @@ import controlador.RegrasNegocio;
 import dao.AditivosDAO;
 import dao.ReceitasDAO;
 import dao.UsuariosDAO;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -253,15 +254,18 @@ public class TelaCustomizarReceitas extends javax.swing.JFrame {
             int lu = Integer.parseInt(lupulo);
             int le = Integer.parseInt(leveduras);
             int a = Integer.parseInt(acucares);
-            int quantidade = Integer.parseInt(qnt);
             UsuariosDAO u = RegrasNegocio.getUsuario(logado);
             
-            boolean d = false;
-            try {
-                d = RegrasNegocio.excluirReceita(receita);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaCustomizarReceitas.class.getName()).log(Level.SEVERE, null, ex);
+            if(!qnt.equals("")){
+                int quantidade = Integer.parseInt(qnt);
             }
+            
+            boolean d;
+            
+            d = RegrasNegocio.excluirReceita(receita);
+            //System.out.println("oiii");
+            //System.out.println("d "+ d);
+            
             if(d){
                 JOptionPane.showMessageDialog(null, "Receita excluída com sucesso!", "Excluir", 1);
                 TelaMenu menu = new TelaMenu(logado);
@@ -270,6 +274,8 @@ public class TelaCustomizarReceitas extends javax.swing.JFrame {
             }
         }catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Digite valores válidos para os campos.", "Erro", 0);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir receita.", "Erro", 0);
         }
     }//GEN-LAST:event_botaoExcluirActionPerformed
 
@@ -281,33 +287,64 @@ public class TelaCustomizarReceitas extends javax.swing.JFrame {
         String qnt = inputQuantidade.getText();
         String aditivos  = inputAditivos.getText();
         String nome = inputNomeReceita.getText();
+         ArrayList<AditivosDAO> lista = new ArrayList<>();
         try{
             int mal = Integer.parseInt(maltes);
             int lu = Integer.parseInt(lupulo);
             int le = Integer.parseInt(leveduras);
             int a = Integer.parseInt(acucares);
-            int quantidade = Integer.parseInt(qnt);
+            int quantidade = 0;
+            if(!qnt.equals("")){
+                quantidade = Integer.parseInt(qnt);
+            }
             UsuariosDAO u = RegrasNegocio.getUsuario(logado);
             boolean j = RegrasNegocio.verificarQuantidade(mal,le,lu,a,quantidade);
             
             if(j){
-                //AditivosDAO ad = new AditivosDAO(0,aditivos,quantidade);
-                
                 receita.setAcucares(a);
                 receita.setLeveduras(le);
                 receita.setLupulo(lu);
                 receita.setMaltes(mal);
                 receita.setNome(nome);
-                System.out.println("oieeee");
                 try {
-                    receita.alterar();
                     if(quantidade != 0){
-                        AditivosDAO aditivo = AditivosDAO.getAditivosProdutoNome(receita.getId(), aditivos);
+                        //AditivosDAO aditivo = AditivosDAO.getAditivosProdutoNome(receita.getId(), aditivos);
+                        if(!receita.getAditivo().isEmpty()){
+                            AditivosDAO aditivo = receita.getAditivo().get(0);
+                            aditivo.setNome(aditivos);
+                            aditivo.setQuantidade(quantidade);
+                            aditivo.alterarAditivo();
+                        }
+                        else{//significa que a receita nao tinha aditivo e agora tem
+                            receita.remover();
+                            /*for(ReceitasDAO r :  RegrasNegocio.getUsuario(logado).getReceitas()){
+                                if(){
+                                    
+                                }
+                            }*/
+                            RegrasNegocio.getUsuario(logado).getReceitas().remove(receita);
+                            AditivosDAO ad = new AditivosDAO(0,aditivos,quantidade);
+                            lista.add(ad);
+                            ReceitasDAO r = new ReceitasDAO(nome,mal,le,lu,a,lista);
+                            boolean i = false;
+                            i = RegrasNegocio.cadastrarReceita(r,logado);
                         
-                        aditivo.setNome(aditivos);
-                        aditivo.setQuantidade(quantidade);
-                        aditivo.alterarAditivo();
+                        }  
                     }
+                    
+                    else{ //caso tenha aditivo que foi retirado
+                        //AditivosDAO aditivo = ;
+                        //AditivosDAO aditivo = AditivosDAO.getAditivosProdutoNome(receita.getId(), n);
+                        if(!receita.getAditivo().isEmpty()){
+                            receita.getAditivo().get(0).removerAditivoSemStatic(receita.getId());
+                            receita.setAditivo(new ArrayList<AditivosDAO>());
+                        }
+                        
+                        
+                    }
+                    
+                    receita.alterar();
+                    
                     JOptionPane.showMessageDialog(null, "Receita customizada com sucesso!", "Alterar", 1);
                     TelaMenu menu = new TelaMenu(logado);
                     menu.setVisible(true);
@@ -325,8 +362,8 @@ public class TelaCustomizarReceitas extends javax.swing.JFrame {
         }
         catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Digite um valor válido para os campos.", "Erro", 0);
-        } catch (Exception ex) {
-            Logger.getLogger(TelaCustomizarReceitas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao alterar dados da receita.", "Erro", 0);
         }
     }//GEN-LAST:event_botaoSalvarActionPerformed
 

@@ -103,13 +103,24 @@ public class TelaMostrarReceita extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel9.setText("Aditivos:");
 
+        inputLupulo.setEditable(false);
         inputLupulo.setToolTipText("");
+
+        inputMaltes.setEditable(false);
+
+        inputAditivo.setEditable(false);
+
+        inputAcucares.setEditable(false);
+
+        inputQuantidade.setEditable(false);
 
         inputNomeReceita.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
         inputNomeReceita.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel10.setText("Quantidade:");
+
+        inputLeveduras.setEditable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -265,12 +276,17 @@ public class TelaMostrarReceita extends javax.swing.JFrame {
         String qnt = inputQuantidade.getText();
         String aditivos  = inputAditivo.getText();
         String nome = inputNomeReceita.getText();
+        
         try{
             int mal = Integer.parseInt(maltes);
             int lu = Integer.parseInt(lupulo);
             int le = Integer.parseInt(leveduras);
             int a = Integer.parseInt(acucares);
-            int quantidade = Integer.parseInt(qnt);
+            int quantidade = 0;
+            if(!qnt.equals("")){
+                quantidade = Integer.parseInt(qnt);
+            }
+            
             UsuariosDAO u = RegrasNegocio.getUsuario(logado);
             boolean j = RegrasNegocio.validarFabricacao(mal,le,lu,a,aditivos,quantidade,u);
             
@@ -279,21 +295,30 @@ public class TelaMostrarReceita extends javax.swing.JFrame {
                 u.getIngredientes().setAcucares(u.getIngredientes().getAcucares() - a);
                 u.getIngredientes().setLupulo(u.getIngredientes().getLupulo() - lu);
                 u.getIngredientes().setLeveduras(u.getIngredientes().getLeveduras() - le);
-               
                 u.getIngredientes().alterar();
                 
                 if(quantidade != 0){
-                    AditivosDAO aditivo = AditivosDAO.getAditivosProdutoNome(u.getIngredientes().getId(), nome);
-                    System.out.println("nome "+aditivo.getNome());
-                    aditivo.setQuantidade(aditivo.getQuantidade() - quantidade);
-                    aditivo.alterarAditivo();
+                     for(AditivosDAO ad : u.getIngredientes().getAditivo()){
+                         if(ad.getNome().equals(aditivos)){
+                            //aditivo = ad;
+                            ad.setQuantidade(ad.getQuantidade() - quantidade);
+                            ad.alterarAditivo();
+                            break;
+                             
+                         }
+                     }
+                  
+                    //AditivosDAO aditivo = AditivosDAO.getAditivosProdutoNome(u.getIngredientes().getId(), aditivos); 
+                    
                 }
+                
+                JOptionPane.showMessageDialog(null, "Receita fabricada com sucesso!", "Fabricar", 1);
+                TelaMenu menu = new TelaMenu(logado);
+                menu.setVisible(true);
+                dispose();
               
-        
-               
-                              
             }else{
-                JOptionPane.showMessageDialog(null, "Quantidade não pode ser negativa.", "Erro", 0);
+                JOptionPane.showMessageDialog(null, "Quantidade insuficiente para fabricação.", "Erro", 0);
             }
             
         }

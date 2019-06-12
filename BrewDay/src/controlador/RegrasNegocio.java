@@ -34,7 +34,7 @@ public class RegrasNegocio {
      }
      
      public static boolean verificarQuantidade(int maltes, int leveduras, int lupulo, int acucares, int qnt){
-         if(maltes > 0 && leveduras > 0 && lupulo > 0 && acucares > 0 && qnt > 0){
+         if(maltes >= 0 && leveduras >= 0 && lupulo >= 0 && acucares >= 0 && qnt >= 0){
              return true;
          }
          return false;
@@ -45,12 +45,13 @@ public class RegrasNegocio {
          return i;
      }
      
-     public static void adicionarAditivo(AditivosDAO aditivo){
+    /* public static void adicionarAditivo(AditivosDAO aditivo){
          MEM.adicionarAditivo(aditivo);
-     }
+     }*/
      
      public static boolean excluirReceita(ReceitasDAO r) throws Exception{
          boolean i = MEM.excluirReceita(r);
+         System.out.println("i "+i);
          return i;
      }
      
@@ -58,6 +59,7 @@ public class RegrasNegocio {
          boolean i = MEM.validarFabricacao(mal,le,lu,a,aditivos,quantidade,u);
          return i;
      }
+     
      
      public static boolean consultarAditivo(AditivosDAO aditivo, ProdutosDAO produto){
          boolean i = MEM.consultarAditivo(aditivo, produto);
